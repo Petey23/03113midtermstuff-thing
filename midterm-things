@@ -1,10 +1,7 @@
-//
 //  ViewController.swift
 //  NotesApp
-//
 //  Created by Jacob Levy on 10/17/18.
 //  Copyright © 2018 Jacob Levy. All rights reserved.
-//
 /**
  # The Notes List App
  
@@ -31,7 +28,6 @@
  the first video of Chapter 5.   You may also want to view Chapter 3 (about 15 mins long) which breaks down
  various aspects of working in a real XCode project (as opposed to the playground files).
  
- 
  You only need to modify the ViewController.swift file (the brains).  However for testing and debugging, you are
  being provided the following list of files:
  
@@ -40,7 +36,6 @@
  - AppDelegate.swift
  - Main.storyboard
  - NoteCell.swift
- 
  
  Directions:
  1) Either at the very top of this file, or in a separate file within this project directory you must create a Type definition
@@ -73,15 +68,9 @@
  A block comment with several lines
  describing what you need to do.
  **************************************/
- 
- 
  */
 
 import UIKit
-
-
-
-
 //    If you are familiar with MVC architecture, then this design should look somewhat familiar.
 //The viewController orchestrates what is happening in the app "behind the scenes".   It "controls" both the
 //Model (in this case our Data Model is the basic array of Notes) and the View and how they communicate.  In
@@ -92,8 +81,7 @@ import UIKit
 
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
-    struct note{
-        
+    struct Note{
         let priority: Int = 0
         let message: String = ""
         
@@ -106,7 +94,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
     }
     
-    let myNote = note()
+    let myNote = Note() //REQUIRED TO MAKE EVERYTHING WORK.
     
     //Outlet connected to the pickerView (comboBox), aka the priority Numbers
     @IBOutlet weak var priorityDropDown: UIPickerView!
@@ -120,7 +108,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     //Note that our model in this case is very "stupid". Its just an array.
     //this array will hold the items in our notes App
     
-    var myTableData: [note] = []// Create an empty array of Note Values
+    var myTableData: [Note] = []// Create an empty array of Note Values
     
     let prioritiesList = ["1", "2", "3", "4", "5"]
     
@@ -136,8 +124,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         priorityDropDown.dataSource = self
         priorityDropDown.delegate = self
         
-        
-        
         //Set up the Title Bar and Buttons
         self.title = "Notes App"
         let clearButton = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(clearList))
@@ -148,9 +134,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let sortAlphaButton = UIBarButtonItem(barButtonSystemItem: .organize, target: self, action: #selector(sortNotesAlpha))
         let sortPrioritiesButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(sortNotePriority))
         self.navigationItem.leftBarButtonItems = [editButtonItem, sortAlphaButton, sortPrioritiesButton]
-        
-        
-        
         myTable.reloadData()
     }
     //------------------------------------------------------------------------------------------------------------------------------------------
@@ -162,14 +145,13 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
      */
     @IBAction func didTapDown(_ sender: UIButton) {
         
-        
-        
         //guard against the current cell being nil
         //try to assign the button source's containing TableView Cell to thisCell constant
         guard let thisCell = sender.superview?.superview as? NoteCell else{
             print("Something weird happened: Down Button")
             return
         }
+        
         /*  Explanation of statement above:
          the guard let statement acts an "optional binding" statement
          it ensures that the assignment of thisCell (current Cell) to the button's container View is not nil, then
@@ -181,7 +163,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         //After this line of code you can access the constant thisCell which
         //represents the current Cell we are trying to move down the list
         
-        //get this Cell's location  in the View Table
+        //get this Cell's location in the View Table
         let indexPath = myTable.indexPath(for: thisCell)
         
         
@@ -209,8 +191,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
          myTableData[currentRow] = myTableData[currentRow + 1]
          myTableData[currentRow + 1] = temp
          */
-        
-        
         //+/- 7 lines of code
         //*********************/
         
@@ -219,8 +199,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         //Reloads the view so that you can see your changes.  DO NOT REMOVE THIS LINE OF CODE
         myTable.reloadData()
     }
-    
-    
     
     @IBAction func didTapUp(_ sender: UIButton) {
         
@@ -233,14 +211,14 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let indexPath = myTable.indexPath(for: thisCell)
         let currentRow = (indexPath?.row)!
         
-        
         /*********************
          HOOK:
          You must write logic here to `guard` that this currentRow value is not already at the TOP of the list.
          If it is at the top of the list, print a message indicating this to the console and return early.
          After you have ensured that it is not already at the top of the list, switch the currently chosen
          item with the one that immediately precedes it in the myTableData array.
-         */
+         +/- 7 lines of code
+        *********************/
         
         guard currentRow != 0 else{
             print("The currentRow is at the top of the list.")
@@ -248,12 +226,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
         
         swap(&myTableData[currentRow] , &myTableData[currentRow - 1])
-        
-        
-        /*
-         +/- 7 lines of code
-         *********************/
-        
         
         /////////////////////////////////
         
@@ -269,7 +241,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
      will determine whether or not to call insertMultipleNotes or insertSingleNote. If the text of the note contains commas,
      this method assumes that there are multiple notes in the text field and will insert each one individually (insertMutipleNotes).
      
-     
      This method must be exposed to the objective C runtime or it will not run when the user clicks the corresponding button.
      Check the slides and notes from lecture to determine the appropriate tag to use.
      
@@ -277,15 +248,11 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
      Strings before handling them.
      +/- 5 Lines of Code
      
-     
      - Parameters : none
      - Returns : none
-     
      */
     
     @objc func insertNote(){
-        
-        
         //After this line of code you can access the constant note as a String
         //We will cover guard let statements later in the semester
         //if the note is empty, the view table is in editing mode, or a priority is not selected, this function will return
@@ -295,10 +262,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             print("Theres nothing to insert in this Note!!!")
             return
         }
-        
-        
-        
-        
         //YOU FILL IN THIS Part of the METHOD
         //This should insert Notes at the top of the list
         /*************
@@ -330,10 +293,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
      
      This method inserts a single note at the TOP of the list of Notes.
      
-     
      - Parameters : trimmedNote - A string value that represents the note to be inserted with leading and trailing whitespace removed
      - Returns : none
-     
      */
     
     func insertSingleNote(trimmedNote: String){
@@ -369,13 +330,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     //------------------------------------------------------------------------------------------------------------------------------------------
     /**
      insertMultipleNotes
-     
      This method inserts multiple notes at the TOP of the list of Notes.
-     
-     
      - Parameters : trimmedNote - A string value that represents the note to be inserted with leading and trailing whitespace removed
      - Returns : none
-     
      */
     func insertMultipleNotes(trimmedNote: String){
         let priorityLevel = priorityDropDown.selectedRow(inComponent: 0) + 1
@@ -383,35 +340,40 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         /*************
          HOOK:
          Guard that the trimmed note actually contains one or more commas else return early.
-         
          After the guard, split the string into individual items using commas as the basis of the split
-         
          Iterate over each item in the returned array.  Make sure that each is not empty after trimming its front and back white
          space. Then a create and insert a new Note into the myTableData array, using the provided priorityLevel and the
          trimmedNote as parameters.
-         
          THe *LAST* line of the loop should be the line myTable.insertRows(at:...) method call that is provided below
-         
-         
-         
          +/- 10 Lines of code
          *************/
         
+        
+        guard trimmedNote.contains(",") else{
+            return
+        }
+        
+        let pArray = trimmedNote.components(separatedBy: ",")
+        for _ in pArray{
+            if (pArray.contains{$0 == nil}){
+            return
+            }
+        }
+        
+        myTableData.insert(myNote, at: priorityLevel)
+        
+        
         //this should be the last line of the loop
         myTable.insertRows(at: [setIndexPath(methodName: "insertNote")], with: .automatic)
-        
-        
-        
     }
     //------------------------------------------------------------------------------------------------------------------------------------------
     /**
      addNote
-     
+
      This method is called when the user clicks the add button (the one with a + ). In turn, this method
      will determine whether or not to call addMultipleNotes or addSingleNote. If the text of the note contains commas,
      this method assumes that there are multiple notes in the text field and will insert each one individually
      (addMutipleNotes).
-     
      
      This method must be exposed to the objective C runtime or it will not run when the user clicks the corresponding button.
      Check the slides and notes from lecture to determine the appropriate tag to use.
@@ -422,26 +384,19 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
      - Parameters : none
      - Returns : none
      
-     
      - Pre-Condition:  List is Size n, there is text in the textField, and there are n filled rows on Screen
      - Post-Condition:  If the method call is valid, a new note is added to the data array and shown on screen, size is n+1
      - Purpose: Adds a single Note to the list
      - Notes: Needs exposure to Obj-C runtime to partake in the message dispatch required by Users interacting with the buttons
      
-     
      +/- 5 Lines of Code
-     
      */
     @objc func addNote(){
-        
-        
-        guard let note = noteTextField.text, goodToGo() else{
+        guard let Note = noteTextField.text, goodToGo() else{
             print("Theres nothing to insert in this Note!!!")
             return
         }
         //You can now access note from here on as a constant String
-        
-        
         /****************
          HOOK: Similar to insertNote. Trim the note variable, removing front and back whitespace using the provided String
          method, and assign it to a new constant.
@@ -451,23 +406,26 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
          
          **********************/
         
+        let trimmedNote = myNote.getMessage()
+        let thingA = trimmedNote.stringTrimFrontandBackWhiteSpace()
+        
+        if(thingA.contains(",")){
+            insertMultipleNotes(trimmedNote: thingA)
+        }else{
+            insertSingleNote(trimmedNote:thingA)
+        }
         
         
         
         noteTextField.text! = ""
-        
         return
     }
     //------------------------------------------------------------------------------------------------------------------------------------------
     /**
      addSingleNote
-     
      This method inserts a single note at the BOTTOM of the list of Notes.
-     
-     
      - Parameters : trimmedNote - A string value that represents the note to be inserted with leading and trailing whitespace removed
      - Returns : none
-     
      */
     func addSingleNote(trimmedNote: String){
         
@@ -476,10 +434,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         /*************
          HOOK:
          You must guard that the trimmed note is not empty.  AKA we already checked to see if it was nil but we didn't check to see if it was something silly like all white space before we trimmed it. If the note is empty, return early.
-         
          After the guard, `append` the note to the bottom of the list, aka the end of the myTableData array. Use the given
          priorityLevel (above) to create the Note to be added
-         
          +/- 3 Lines of code
          *************/
         
@@ -489,8 +445,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         //DO NOT CHANGE THE FOLLOWING LINE OF CODE
         myTable.insertRows(at: [setIndexPath(methodName: "addNote")], with: .automatic)
-        
-        
         //if the note is empty, the view table is in editing mode, or a priority is not selected, this function will return without
         // adding the note
         return
@@ -521,14 +475,13 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
          
          THe *LAST* line of the loop should be the line myTable.insertRows(at:...) method call that is provided below
          
-         
-         
          +/- 10 Lines of code
          *************/
         
         guard trimmedNote.contains(",") else {
             return
         }
+        
         
         var myArray = Array(trimmedNote.characters)
         
@@ -537,9 +490,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         // this should be the last line of the loop
         myTable.insertRows(at: [setIndexPath(methodName: "addNote")], with: .automatic)
-        
-        
-        
         return
         
     }
@@ -648,7 +598,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         cell.downButton.isEnabled = false
         
         //grab the data in the corresponding row of the data Source Array
-        cell.textLabel?.text = myTableData[indexPath.row].getMessage() + "  Priority: \(myTableData[indexPath.row].getPriority(priorityList: <#Int#>))"
+        //cell.textLabel?.text = myTableData[indexPath.row].getMessage() + "  Priority: \(myTableData[indexPath.row].getPriority(priorityList: <#Int#>))"
         //let tapGesture = UITapGestureRecognizer(target: self, action: <#T##Selector?#>)
         
         print(String(describing: cell.textLabel?.text))
@@ -717,8 +667,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         return title
         
     }/********************************************************************************************************/
-    
-    
 }
 //Extension to String Class to help sanitize inputs from users
 //uses a regex to determine if there is leading or trailing whitespace
