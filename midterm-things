@@ -94,7 +94,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
     }
     
-    let myNote = Note() //REQUIRED TO MAKE EVERYTHING WORK.
+    //let myNote = Note() //REQUIRED TO MAKE EVERYTHING WORK.
     
     //Outlet connected to the pickerView (comboBox), aka the priority Numbers
     @IBOutlet weak var priorityDropDown: UIPickerView!
@@ -246,7 +246,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
      
      This method should make good use of String method added to this project, to trim the front and back whitespace from
      Strings before handling them.
-     +/- 5 Lines of Code
+     
      
      - Parameters : none
      - Returns : none
@@ -272,7 +272,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
          +/- 6 Lines of code
          *******************/
         
-        let trimmedNote = myNote.getMessage()
+        let trimmedNote = note
         
         let thingA = trimmedNote.stringTrimFrontandBackWhiteSpace()
         
@@ -284,15 +284,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         //clear the textField
         noteTextField.text! = ""
-        
         return
     }
     //------------------------------------------------------------------------------------------------------------------------------------------
     /**
      insertSingleNote
-     
      This method inserts a single note at the TOP of the list of Notes.
-     
      - Parameters : trimmedNote - A string value that represents the note to be inserted with leading and trailing whitespace removed
      - Returns : none
      */
@@ -305,9 +302,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
          HOOK:
          You must guard that the trimmed note is not empty.  AKA we already checked to see if it was nil but we didn't check to see
          if it something silly like all white space before we trimmed it. If the note is empty, return early.
-         After the guard, `insert` the note at at Top of the list, aka the beginning of the myTableData array. Use the given
+         -After the guard, `insert` the note at at Top of the list, aka the beginning of the myTableData array. Use the given
          priorityLevel (above) to create the Note to be inserted
-         
          +/- 3 Lines of code
          *************/
         
@@ -315,7 +311,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             return
         }
         
-        var newTrimmedNote = myNote.getPriority(priorityList: priorityLevel)
+        var newTrimmedNote = Note.getPriority(priorityList: priorityLevel)
         
         //newTrimmedNote.setPriority(_: priorityLevel)  //, priorityList: priorityLevel)
         
@@ -392,7 +388,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
      +/- 5 Lines of Code
      */
     @objc func addNote(){
-        guard let Note = noteTextField.text, goodToGo() else{
+        guard let note = noteTextField.text, goodToGo() else{
             print("Theres nothing to insert in this Note!!!")
             return
         }
@@ -406,16 +402,13 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
          
          **********************/
         
-        let trimmedNote = myNote.getMessage()
-        let thingA = trimmedNote.stringTrimFrontandBackWhiteSpace()
+        let thingB = note.stringTrimFrontandBackWhiteSpace()
         
-        if(thingA.contains(",")){
-            insertMultipleNotes(trimmedNote: thingA)
+        if(thingB.contains(",")){
+            insertMultipleNotes(trimmedNote: thingB)
         }else{
-            insertSingleNote(trimmedNote:thingA)
+            insertSingleNote(trimmedNote:thingB)
         }
-        
-        
         
         noteTextField.text! = ""
         return
@@ -439,6 +432,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
          +/- 3 Lines of code
          *************/
         
+        guard !trimmedNote.isEmpty else{
+            return
+        }
         
         
         
@@ -499,11 +495,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         /***************
          HOOK:  Clear the array here
          ****************/
-        
-        
         /*DO NOT REMOVE THE LINE BELOW*/
         myTable.reloadData()
-        
     }
     //------------------------------------------------------------------------------------------------------------------------------------------
     //    Functions that you must write
@@ -516,6 +509,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
      Post-Condition:  If the note passed in is empty, this function returns false, otherwise returns true
      +/- 6 Lines
      */
+    
+    func guardisNotEmpty (note: String) -> Bool {
+        if note.isEmpty{
+            return false
+        }
+    }
     
     /** func sortNotesAlpha
      Pre-Condition:  None
