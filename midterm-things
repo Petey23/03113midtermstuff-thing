@@ -5,6 +5,7 @@
 //  Created by Jacob Levy on 10/17/18.
 //  Copyright © 2018 Jacob Levy. All rights reserved.
 //
+
 /**
  # The Notes List App
  
@@ -31,7 +32,6 @@
  the first video of Chapter 5.   You may also want to view Chapter 3 (about 15 mins long) which breaks down
  various aspects of working in a real XCode project (as opposed to the playground files).
  
- 
  You only need to modify the ViewController.swift file (the brains).  However for testing and debugging, you are
  being provided the following list of files:
  
@@ -40,8 +40,7 @@
  - AppDelegate.swift
  - Main.storyboard
  - NoteCell.swift
- 
- 
+
  Directions:
  1) Either at the very top of this file, or in a separate file within this project directory you must create a Type definition
  for a Note type. You must make a potentially important design decision.  Should Note be a Struct or a Class?
@@ -61,7 +60,6 @@
  - getPriority : returns an Int representing the priority value for a Note instance
  - getMessage : returns a String representing the message for a Note instance
  
- 
  2) Read the comments and look for the "hooks" that have been left for you to fill in code.  They will be block
  formatted comments that describe the logic you need to fill in.  Again, you will only be writing pure Swift to
  fix this program and will not need to write any iOS calls.
@@ -74,19 +72,15 @@
  describing what you need to do.
  **************************************/
  
- 
  */
 
 import UIKit
 
-
-
-
-//    If you are familiar with MVC architecture, then this design should look somewhat familiar.
+//If you are familiar with MVC architecture, then this design should look somewhat familiar.
 //The viewController orchestrates what is happening in the app "behind the scenes".   It "controls" both the
 //Model (in this case our Data Model is the basic array of Notes) and the View and how they communicate.  In
 //iOS the View is the file called Main.StoryBoard
-//
+
 //The list of items after "ViewController:" is a list of classes that the VC either inherits from or Protocols
 //(delegates) that the VC implements.  For now, that is all you need to know about them.
 
@@ -136,8 +130,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         priorityDropDown.dataSource = self
         priorityDropDown.delegate = self
         
-        
-        
         //Set up the Title Bar and Buttons
         self.title = "Notes App"
         let clearButton = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(clearList))
@@ -149,8 +141,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let sortPrioritiesButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(sortNotePriority))
         self.navigationItem.leftBarButtonItems = [editButtonItem, sortAlphaButton, sortPrioritiesButton]
         
-        
-        
         myTable.reloadData()
     }
     //------------------------------------------------------------------------------------------------------------------------------------------
@@ -160,9 +150,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
      - PreCondition: The note is at position n in the myTableData array
      - PostCondition: The note is at postion n+1 in the myTableData array
      */
+    
     @IBAction func didTapDown(_ sender: UIButton) {
-        
-        
         
         //guard against the current cell being nil
         //try to assign the button source's containing TableView Cell to thisCell constant
@@ -210,7 +199,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
          myTableData[currentRow + 1] = temp
          */
         
-        
         //+/- 7 lines of code
         //*********************/
         
@@ -219,8 +207,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         //Reloads the view so that you can see your changes.  DO NOT REMOVE THIS LINE OF CODE
         myTable.reloadData()
     }
-    
-    
     
     @IBAction func didTapUp(_ sender: UIButton) {
         
@@ -232,7 +218,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         let indexPath = myTable.indexPath(for: thisCell)
         let currentRow = (indexPath?.row)!
-        
         
         /*********************
          HOOK:
@@ -249,11 +234,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         swap(&myTableData[currentRow] , &myTableData[currentRow - 1])
         
-        
         /*
          +/- 7 lines of code
          *********************/
-        
         
         /////////////////////////////////
         
@@ -269,7 +252,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
      will determine whether or not to call insertMultipleNotes or insertSingleNote. If the text of the note contains commas,
      this method assumes that there are multiple notes in the text field and will insert each one individually (insertMutipleNotes).
      
-     
      This method must be exposed to the objective C runtime or it will not run when the user clicks the corresponding button.
      Check the slides and notes from lecture to determine the appropriate tag to use.
      
@@ -277,14 +259,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
      Strings before handling them.
      +/- 5 Lines of Code
      
-     
      - Parameters : none
      - Returns : none
      
      */
     
     @objc func insertNote(){
-        
         
         //After this line of code you can access the constant note as a String
         //We will cover guard let statements later in the semester
@@ -296,11 +276,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             return
         }
         
-        
-        
-        
         //YOU FILL IN THIS Part of the METHOD
         //This should insert Notes at the top of the list
+        
         /*************
          HOOK: Trim the note variable, removing front and back whitespace using the provided String method, and assign it to
          a new constant.
@@ -330,10 +308,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
      
      This method inserts a single note at the TOP of the list of Notes.
      
-     
      - Parameters : trimmedNote - A string value that represents the note to be inserted with leading and trailing whitespace removed
      - Returns : none
-     
      */
     
     func insertSingleNote(trimmedNote: String){
@@ -360,8 +336,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         //myTableData.insert(newTrimmedNote, at: 0)
         
-        
         //DO NOT CHANGE THE FOLLOWING LINEs OF CODE
+        
         myTable.insertRows(at: [setIndexPath(methodName: "insertNote")], with: .automatic)
         
         return
@@ -371,7 +347,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
      insertMultipleNotes
      
      This method inserts multiple notes at the TOP of the list of Notes.
-     
      
      - Parameters : trimmedNote - A string value that represents the note to be inserted with leading and trailing whitespace removed
      - Returns : none
@@ -392,15 +367,11 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
          
          THe *LAST* line of the loop should be the line myTable.insertRows(at:...) method call that is provided below
          
-         
-         
          +/- 10 Lines of code
          *************/
         
         //this should be the last line of the loop
         myTable.insertRows(at: [setIndexPath(methodName: "insertNote")], with: .automatic)
-        
-        
         
     }
     //------------------------------------------------------------------------------------------------------------------------------------------
@@ -412,7 +383,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
      this method assumes that there are multiple notes in the text field and will insert each one individually
      (addMutipleNotes).
      
-     
      This method must be exposed to the objective C runtime or it will not run when the user clicks the corresponding button.
      Check the slides and notes from lecture to determine the appropriate tag to use.
      
@@ -422,18 +392,15 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
      - Parameters : none
      - Returns : none
      
-     
      - Pre-Condition:  List is Size n, there is text in the textField, and there are n filled rows on Screen
      - Post-Condition:  If the method call is valid, a new note is added to the data array and shown on screen, size is n+1
      - Purpose: Adds a single Note to the list
      - Notes: Needs exposure to Obj-C runtime to partake in the message dispatch required by Users interacting with the buttons
      
-     
      +/- 5 Lines of Code
      
      */
     @objc func addNote(){
-        
         
         guard let note = noteTextField.text, goodToGo() else{
             print("Theres nothing to insert in this Note!!!")
@@ -441,18 +408,13 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
         //You can now access note from here on as a constant String
         
-        
         /****************
          HOOK: Similar to insertNote. Trim the note variable, removing front and back whitespace using the provided String
          method, and assign it to a new constant.
          IF the trimmed Note contains commas, call  addMultipleNotes and pass it the trimmed note, otherwise call
          addSingleNote and pass the trimmed note into that one.
          +/- 6 Lines of code
-         
          **********************/
-        
-        
-        
         
         noteTextField.text! = ""
         
@@ -460,15 +422,15 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     //------------------------------------------------------------------------------------------------------------------------------------------
     /**
-     addSingleNote
+     AddSingleNote
      
      This method inserts a single note at the BOTTOM of the list of Notes.
-     
      
      - Parameters : trimmedNote - A string value that represents the note to be inserted with leading and trailing whitespace removed
      - Returns : none
      
      */
+    
     func addSingleNote(trimmedNote: String){
         
         let priorityLevel = priorityDropDown.selectedRow(inComponent: 0) + 1
@@ -490,7 +452,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         //DO NOT CHANGE THE FOLLOWING LINE OF CODE
         myTable.insertRows(at: [setIndexPath(methodName: "addNote")], with: .automatic)
         
-        
         //if the note is empty, the view table is in editing mode, or a priority is not selected, this function will return without
         // adding the note
         return
@@ -500,7 +461,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
      addMultipleNotes
      
      This method inserts multiple notes at the TOP of the list of Notes.
-    
+     
      - Parameters : trimmedNote - A string value that represents the note to be inserted with leading and trailing whitespace removed
      - Returns : none
      
@@ -521,8 +482,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
          
          THe *LAST* line of the loop should be the line myTable.insertRows(at:...) method call that is provided below
          
-         
-         
          +/- 10 Lines of code
          *************/
         
@@ -532,14 +491,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         var myArray = Array(trimmedNote.characters)
         
-        
-        
-        
         // this should be the last line of the loop
         myTable.insertRows(at: [setIndexPath(methodName: "addNote")], with: .automatic)
-        
-        
-        
+
         return
         
     }
@@ -549,7 +503,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         /***************
          HOOK:  Clear the array here
          ****************/
-        
         
         /*DO NOT REMOVE THE LINE BELOW*/
         myTable.reloadData()
@@ -567,6 +520,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
      +/- 6 Lines
      */
     
+    func guardNoteisNotEmpty (note: String) -> Bool {
+        if note.isEmpty {
+            return false 
+      }  
+    }
+    
     /** func sortNotesAlpha
      Pre-Condition:  None
      Post-Condition: the list is sorted Alphabetically by Message
@@ -576,9 +535,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
      ?? Lines (depends on your sorting algorithm)
      
      */
+    
     @objc func sortNotesAlpha(){
         //Write an algorithm to sort the notes by their message, alphabetically
-        
         
         myTable.reloadData()
     }
@@ -594,8 +553,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
      */
     @objc func sortNotePriority(){
         //Write an algorithm to sort the notes by their priority
-        
-        
         
         myTable.reloadData()
     }
@@ -737,3 +694,4 @@ extension String{
         
     }
 }
+
