@@ -342,24 +342,18 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
          +/- 10 Lines of code
          *************/
         
-        
         guard trimmedNote.contains(",") else{
             return
         }
-        
-        let pArray = trimmedNote.components(separatedBy: ",")
-        for _ in pArray{
-            if (pArray.contains{$0 == nil}){
-            return
+        let pArray = trimmedNote.split(separator: ",")
+        for thing in pArray{
+            if (!thing.isEmpty){
+                let myNote = Note(priority: priorityLevel , message: String(thing).stringTrimFrontandBackWhiteSpace())
+                myTableData.insert(myNote, at: 0)
+                myTable.insertRows(at: [setIndexPath(methodName: "insertNote")], with: .automatic)
             }
         }
-        
-        
-        myTableData.insert(trimmedNote, at: 0)
-        
-        
-        //this should be the last line of the loop
-        myTable.insertRows(at: [setIndexPath(methodName: "insertNote")], with: .automatic)
+        return
     }
     //------------------------------------------------------------------------------------------------------------------------------------------
     /**
@@ -484,21 +478,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             }else{
                 let myNote = Note(priority: priorityLevel, message: trimmedNote)
                 
-            }
-        }
-        
-        
-        
-        
-        var myArray = Array(trimmedNote.characters)
-        
-        myTableData.insert(newTrimmedNote, at: 0)
-        
-        
+            
         // this should be the last line of the loop
         myTable.insertRows(at: [setIndexPath(methodName: "addNote")], with: .automatic)
         return
-        
+            }
+        }
     }
     
     @objc func clearList(){
