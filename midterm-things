@@ -85,6 +85,11 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let priority: Int = 0
         let message: String = ""
         
+        init(priority: Int, message: String){
+            self.priority = priority
+            self.message = message
+        }
+        
         func getPriority(priorityList: Int) -> Int{
             return priority
         }
@@ -101,7 +106,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     //Interface outlet connected to the viewable Table on the phone Screen
     @IBOutlet weak var myTable: UITableView!  //implicitly unwrapped optional
-    
     @IBOutlet weak var noteTextField: UITextField!
     
     /***************************THE MODEL*****************/
@@ -115,7 +119,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     //This is where the main logic and setup code of an iOS app goes.  For this project, you should not modify this method.
     override func viewDidLoad() {
         super.viewDidLoad()
-        noteTextField.layer.borderColor = UIColor.black.cgColor
+        noteTextField.layer.borderColor = UIColor.blue.cgColor
         noteTextField.layer.borderWidth = CGFloat(4.0)
         
         // Do any additional setup after loading the view, typically from a nib.
@@ -258,7 +262,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         //if the note is empty, the view table is in editing mode, or a priority is not selected, this function will return
         //without adding the note
         
-        guard let _ = noteTextField.text, goodToGo() else{
+        guard let note = noteTextField.text, goodToGo() else{
             print("Theres nothing to insert in this Note!!!")
             return
         }
@@ -272,9 +276,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
          +/- 6 Lines of code
          *******************/
         
-        let trimmedNote = note
         
-        let thingA = trimmedNote.stringTrimFrontandBackWhiteSpace()
+        
+        let thingA = note.stringTrimFrontandBackWhiteSpace()
         
         if(thingA.contains(",")){
             insertMultipleNotes(trimmedNote: thingA)
@@ -311,16 +315,14 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             return
         }
         
-        var newTrimmedNote = Note.getPriority(priorityList: priorityLevel)
-        
-        //newTrimmedNote.setPriority(_: priorityLevel)  //, priorityList: priorityLevel)
-        
-        //myTableData.insert(newTrimmedNote, at: 0)
+        let newTrimmedNote = Note(priority: priorityLevel, message: trimmedNote )
         
         
-        //DO NOT CHANGE THE FOLLOWING LINEs OF CODE
+        myTableData.insert(newTrimmedNote, at: 0)
+        
+        
+        //DO NOT CHANGE THE FOLLOWING LINES OF CODE
         myTable.insertRows(at: [setIndexPath(methodName: "insertNote")], with: .automatic)
-        
         return
     }
     //------------------------------------------------------------------------------------------------------------------------------------------
@@ -356,7 +358,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             }
         }
         
-        myTableData.insert(myNote, at: priorityLevel)
+        
+        //myTableData.insert(trimmedNote, at: 0)
         
         
         //this should be the last line of the loop
@@ -508,14 +511,14 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
      Pre-condition:  The note passed in is non-nil
      Post-Condition:  If the note passed in is empty, this function returns false, otherwise returns true
      +/- 6 Lines
-     */
+     
     
     func guardisNotEmpty (note: String) -> Bool {
         if note.isEmpty{
             return false
         }
     }
-    
+    */
     /** func sortNotesAlpha
      Pre-Condition:  None
      Post-Condition: the list is sorted Alphabetically by Message
@@ -597,8 +600,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         cell.downButton.isEnabled = false
         
         //grab the data in the corresponding row of the data Source Array
-        //cell.textLabel?.text = myTableData[indexPath.row].getMessage() + "  Priority: \(myTableData[indexPath.row].getPriority(priorityList: <#Int#>))"
-        //let tapGesture = UITapGestureRecognizer(target: self, action: <#T##Selector?#>)
+        //cell.textLabel?.text = myTableData[indexPath.row].getMessage() + "  Priority: \(myTableData[indexPath.row].getPriority(priorityList: ))"
+        //let tapGesture = UITapGestureRecognizer(target: self, action: )
         
         print(String(describing: cell.textLabel?.text))
         //Return the cell
@@ -659,9 +662,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             title = titleView as! UILabel
         }
         title.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.bold)
-        title.textColor = UIColor.red
+        title.textColor = UIColor.green
         title.text =  prioritiesList[row]
-        title.textAlignment = .center
+        title.textAlignment = .left
         
         return title
         
