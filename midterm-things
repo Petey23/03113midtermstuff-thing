@@ -189,13 +189,13 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             return
         }
         
-        swap(&myTableData[currentRow] , &myTableData[currentRow+1])
+        //swap(&myTableData[currentRow] , &myTableData[currentRow+1])
         
-        /*
+        
          let temp = myTableData[currentRow]
          myTableData[currentRow] = myTableData[currentRow + 1]
          myTableData[currentRow + 1] = temp
-         */
+        
         //+/- 7 lines of code
         //*********************/
         
@@ -230,7 +230,11 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             return
         }
         
-        swap(&myTableData[currentRow] , &myTableData[currentRow - 1])
+        //myTableData.swap(&myTableData[currentRow] , &myTableData[currentRow - 1])
+        
+        let temp = myTableData[currentRow]
+        myTableData[currentRow] = myTableData[currentRow - 1]
+        myTableData[currentRow + 1] = temp
         
         /////////////////////////////////
         
@@ -277,12 +281,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
          +/- 6 Lines of code
          *******************/
         
-        let thingA = note.stringTrimFrontandBackWhiteSpace()
+        let trimmedNote = note.stringTrimFrontandBackWhiteSpace()
         
-        if(thingA.contains(",")){
-            insertMultipleNotes(trimmedNote: thingA)
+        if(trimmedNote.contains(",")){
+            insertMultipleNotes(trimmedNote: trimmedNote)
         }else{
-            insertSingleNote(trimmedNote:thingA)
+            insertSingleNote(trimmedNote: trimmedNote)
         }
         
         //clear the textField
@@ -477,11 +481,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             if String(i).stringTrimFrontandBackWhiteSpace().isEmpty{
                 print("The note is empty")
             }else{
-                 let myNote = Note(priority: priorityLevel , message: String(i).stringTrimFrontandBackWhiteSpace())
-                
-            
-        // this should be the last line of the loop
-        myTable.insertRows(at: [setIndexPath(methodName: "addNote")], with: .automatic)
+                let myNote = Note(priority: priorityLevel , message: String(i).stringTrimFrontandBackWhiteSpace())
+                myTable.insertRows(at: [setIndexPath(methodName: "addNote")], with: .automatic)
         return
             }
         }
@@ -658,7 +659,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         title.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.bold)
         title.textColor = UIColor.green
         title.text =  prioritiesList[row]
-        title.textAlignment = .left
+        title.textAlignment = .center
         
         return title
         
