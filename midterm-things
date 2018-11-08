@@ -276,8 +276,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
          +/- 6 Lines of code
          *******************/
         
-        
-        
         let thingA = note.stringTrimFrontandBackWhiteSpace()
         
         if(thingA.contains(",")){
@@ -316,8 +314,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
         
         let newTrimmedNote = Note(priority: priorityLevel, message: trimmedNote )
-        
-        
         myTableData.insert(newTrimmedNote, at: 0)
         
         
@@ -359,7 +355,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
         
         
-        //myTableData.insert(trimmedNote, at: 0)
+        myTableData.insert(trimmedNote, at: 0)
         
         
         //this should be the last line of the loop
@@ -481,10 +477,22 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             return
         }
         
+        let trimmedList = trimmedNote.split(separator: ",")
+        for i in trimmedList{
+            if String(i).stringTrimFrontandBackWhiteSpace().isEmpty{
+                print("The note is empty")
+            }else{
+                let myNote = Note(priority: priorityLevel, message: trimmedNote)
+                
+            }
+        }
+        
+        
+        
         
         var myArray = Array(trimmedNote.characters)
         
-        
+        myTableData.insert(newTrimmedNote, at: 0)
         
         
         // this should be the last line of the loop
