@@ -80,13 +80,10 @@ import UIKit
 //(delegates) that the VC implements.  For now, that is all you need to know about them.
 
 struct Note{
-    let priority: Int = 0
-    let message: String = ""
+    let priority: Int
+    let message: String
     
-    init(priority: Int, message: String){
-    }
-    
-    func getPriority(priorityList: Int) -> Int{
+    func getPriority() -> Int{
         return priority
     }
     
@@ -186,9 +183,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         //swap(&myTableData[currentRow] , &myTableData[currentRow+1])
         
         
-         let temp = myTableData[currentRow]
-         myTableData[currentRow] = myTableData[currentRow + 1]
-         myTableData[currentRow + 1] = temp
+        let temp = myTableData[currentRow]
+        myTableData[currentRow] = myTableData[currentRow + 1]
+        myTableData[currentRow + 1] = temp
         
         //+/- 7 lines of code
         //*********************/
@@ -217,7 +214,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
          After you have ensured that it is not already at the top of the list, switch the currently chosen
          item with the one that immediately precedes it in the myTableData array.
          +/- 7 lines of code
-        *********************/
+         *********************/
         
         guard currentRow != 0 else{
             print("The currentRow is at the top of the list.")
@@ -304,12 +301,11 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
          +/- 3 Lines of code
          *************/
         
-        guard trimmedNote != "" else{
+        guard !trimmedNote.isEmpty else{
             return
         }
         
-        let newTrimmedNote = Note(priority: priorityLevel, message: trimmedNote )
-        myTableData.insert(newTrimmedNote, at: 0)
+        myTableData.insert(Note(priority: priorityLevel, message: trimmedNote), at: 0)
         
         //DO NOT CHANGE THE FOLLOWING LINES OF CODE
         myTable.insertRows(at: [setIndexPath(methodName: "insertNote")], with: .automatic)
@@ -352,7 +348,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     //------------------------------------------------------------------------------------------------------------------------------------------
     /**
      addNote
-
+     
      This method is called when the user clicks the add button (the one with a + ). In turn, this method
      will determine whether or not to call addMultipleNotes or addSingleNote. If the text of the note contains commas,
      this method assumes that there are multiple notes in the text field and will insert each one individually
@@ -436,7 +432,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
      addMultipleNotes
      
      This method inserts multiple notes at the TOP of the list of Notes.
-    
+     
      - Parameters : trimmedNote - A string value that represents the note to be inserted with leading and trailing whitespace removed
      - Returns : none
      
@@ -471,7 +467,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             }else{
                 let _ = Note(priority: priorityLevel , message: String(i).stringTrimFrontandBackWhiteSpace())
                 myTable.insertRows(at: [setIndexPath(methodName: "addNote")], with: .automatic)
-        return
+                return
             }
         }
     }
@@ -495,13 +491,13 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
      Post-Condition:  If the note passed in is empty, this function returns false, otherwise returns true
      +/- 6 Lines
      
-    
-    func guardisNotEmpty (note: String) -> Bool {
-        if note.isEmpty{
-            return false
-        }
-    }
-    */
+     
+     func guardisNotEmpty (note: String) -> Bool {
+     if note.isEmpty{
+     return false
+     }
+     }
+     */
     /** func sortNotesAlpha
      Pre-Condition:  None
      Post-Condition: the list is sorted Alphabetically by Message
@@ -589,8 +585,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         cell.downButton.isEnabled = false
         
         //grab the data in the corresponding row of the data Source Array
-        //cell.textLabel?.text = myTableData[indexPath.row].getMessage() + "  Priority: \(myTableData[indexPath.row].getPriority(priorityList: ))"
-        //let tapGesture = UITapGestureRecognizer(target: self, action: )
+        cell.textLabel?.text = myTableData[indexPath.row].getMessage() + "  Priority: \(myTableData[indexPath.row].getPriority( ))"
+      //  let tapGesture = UITapGestureRecognizer(target: self, action: )
         
         print(String(describing: cell.textLabel?.text))
         //Return the cell
