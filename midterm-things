@@ -84,8 +84,6 @@ struct Note{
     let message: String = ""
     
     init(priority: Int, message: String){
-       // self.priority = priority
-       // self.message = message
     }
     
     func getPriority(priorityList: Int) -> Int{
@@ -98,10 +96,6 @@ struct Note{
 }
 
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
-    
-    
-    
-    
     //Outlet connected to the pickerView (comboBox), aka the priority Numbers
     @IBOutlet weak var priorityDropDown: UIPickerView!
     
@@ -234,12 +228,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         let temp = myTableData[currentRow]
         myTableData[currentRow] = myTableData[currentRow - 1]
-        myTableData[currentRow + 1] = temp
-        
-        /////////////////////////////////
+        myTableData[currentRow - 1] = temp
         
         //Reloads the view so that you can see your changes.  DO NOT REMOVE THIS LINE OF CODE
-        
         myTable.reloadData()
     }
     //------------------------------------------------------------------------------------------------------------------------------------------
@@ -255,7 +246,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
      
      This method should make good use of String method added to this project, to trim the front and back whitespace from
      Strings before handling them.
-     
      
      - Parameters : none
      - Returns : none
@@ -320,7 +310,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         let newTrimmedNote = Note(priority: priorityLevel, message: trimmedNote )
         myTableData.insert(newTrimmedNote, at: 0)
-        
         
         //DO NOT CHANGE THE FOLLOWING LINES OF CODE
         myTable.insertRows(at: [setIndexPath(methodName: "insertNote")], with: .automatic)
@@ -397,15 +386,14 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
          IF the trimmed Note contains commas, call  addMultipleNotes and pass it the trimmed note, otherwise call
          addSingleNote and pass the trimmed note into that one.
          +/- 6 Lines of code
-         
          **********************/
         
-        let thingB = note.stringTrimFrontandBackWhiteSpace()
+        let trimmedNote = note.stringTrimFrontandBackWhiteSpace()
         
-        if(thingB.contains(",")){
-            insertMultipleNotes(trimmedNote: thingB)
+        if(trimmedNote.contains(",")){
+            insertMultipleNotes(trimmedNote: trimmedNote)
         }else{
-            insertSingleNote(trimmedNote:thingB)
+            insertSingleNote(trimmedNote: trimmedNote)
         }
         
         noteTextField.text! = ""
@@ -481,7 +469,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             if String(i).stringTrimFrontandBackWhiteSpace().isEmpty{
                 print("The note is empty")
             }else{
-                let myNote = Note(priority: priorityLevel , message: String(i).stringTrimFrontandBackWhiteSpace())
+                let _ = Note(priority: priorityLevel , message: String(i).stringTrimFrontandBackWhiteSpace())
                 myTable.insertRows(at: [setIndexPath(methodName: "addNote")], with: .automatic)
         return
             }
@@ -526,6 +514,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     @objc func sortNotesAlpha(){
         //Write an algorithm to sort the notes by their message, alphabetically
         
+        guard !myTableData.isEmpty else{
+            print("There is nothing in the note")
+            return
+        }
+        
+        myTableData.sorted(by: {$0.message.lowercased() <  $1.message.lowercased()} )
         
         myTable.reloadData()
     }
@@ -542,7 +536,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     @objc func sortNotePriority(){
         //Write an algorithm to sort the notes by their priority
         
-        
+        myTableData.sorted(by: {$0.priority >  $1.priority} )
         
         myTable.reloadData()
     }
@@ -656,8 +650,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         if let titleView = view {
             title = titleView as! UILabel
         }
-        title.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.bold)
-        title.textColor = UIColor.green
+        title.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.bold)
+        title.textColor = UIColor.red
         title.text =  prioritiesList[row]
         title.textAlignment = .center
         
